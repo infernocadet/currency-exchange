@@ -4,6 +4,7 @@ import currency.Main;
 import currency.currency.Currency;
 import currency.user.Role;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 
@@ -41,29 +42,32 @@ public class CurrencyPanel extends JPanel {
 
         add(convertPanel, BorderLayout.NORTH);
 
-        String[] columns = new String[5];
+        // Get the list of all currencies
+        List<Currency> currencyList = Main.instance.currencies;
+
+        // Create the columns for the table
+        String[] columns = new String[currencyList.size() + 1];
         columns[0] = "From/To";
-        System.arraycopy(Main.instance.currencies.stream().map(Currency::getName).limit(4).toArray(String[]::new), 0, columns, 1, 4);
+        for (int i = 0; i < currencyList.size(); i++) {
+            columns[i + 1] = currencyList.get(i).getName();
+        }
 
-        String[][] data = new String[4][5];
+        // Create the data for the table
+        String[][] data = new String[currencyList.size()][currencyList.size() + 1];
+        for (int i = 0; i < currencyList.size(); i++) {
+            data[i][0] = currencyList.get(i).getName();
+            Currency currencyFrom = currencyList.get(i);
 
-        for (int i = 0; i < 4; i++) {
-            data[i][0] = columns[i + 1];
-            Currency currencyFrom = Currency.getCurrencyByName(columns[i + 1]);
-            for (int j = 1; j <= 4; j++) {
+            for (int j = 1; j <= currencyList.size(); j++) {
                 if (i == j - 1) {
                     data[i][j] = "-";
                 } else {
-                    Currency currencyTo = Currency.getCurrencyByName(columns[j]);
-                    if (currencyFrom != null && currencyTo != null) {
-                        Double exchangeRate = currencyFrom.getExchangeRates().get(currencyTo.getName());
+                    Currency currencyTo = currencyList.get(j - 1);
+                    Double exchangeRate = currencyFrom.getExchangeRates().get(currencyTo.getName());
 
-                        if (exchangeRate != null) {
-                            //TODO: Check if rate increased or decreased
-                            data[i][j] = String.format("%.2f", exchangeRate);
-                        } else {
-                            data[i][j] = "";
-                        }
+                    if (exchangeRate != null) {
+                        //TODO: Check if rate increased or decreased
+                        data[i][j] = String.format("%.2f", exchangeRate);
                     } else {
                         data[i][j] = "";
                     }

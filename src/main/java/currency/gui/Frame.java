@@ -42,7 +42,7 @@ public class Frame extends JFrame {
         if (currentPanel != null) {
             remove(currentPanel);
         }
-        setSize(550, 150);
+        setSize(600, 200);
         currentPanel = new AdminPanel(this);
         add(currentPanel);
         revalidate();
