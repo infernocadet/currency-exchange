@@ -1,5 +1,6 @@
 package currency;
 
+import currency.currency.Currency;
 import currency.gui.Frame;
 import currency.user.Role;
 import currency.user.User;
@@ -16,6 +17,7 @@ public class Main {
     public static Main instance;
     public User loggedInUser;
     public List<User> users = new ArrayList<>();
+    public List<Currency> currencies = new ArrayList<>();
 
     public boolean login(String username, String password) {
         for (User user : users) {
@@ -44,9 +46,34 @@ public class Main {
         }
     }
 
+    public void loadCurrencies() {
+        // TODO: Load actual currencies
+        Currency aud = new Currency("AUD");
+        aud.getExchangeRates().put("SGD", 0.87);
+        aud.getExchangeRates().put("USD", 0.67);
+        aud.getExchangeRates().put("EUR", 0.60);
+        currencies.add(aud);
+        Currency sgd = new Currency("SGD");
+        sgd.getExchangeRates().put("AUD", 1.15);
+        sgd.getExchangeRates().put("USD", 0.77);
+        sgd.getExchangeRates().put("EUR", 0.69);
+        currencies.add(sgd);
+        Currency usd = new Currency("USD");
+        usd.getExchangeRates().put("AUD", 1.50);
+        usd.getExchangeRates().put("SGD", 1.30);
+        usd.getExchangeRates().put("EUR", 0.90);
+        currencies.add(usd);
+        Currency eur = new Currency("EUR");
+        eur.getExchangeRates().put("AUD", 1.66);
+        eur.getExchangeRates().put("SGD", 1.44);
+        eur.getExchangeRates().put("USD", 1.11);
+        currencies.add(eur);
+    }
+
     public Main() {
         instance = this;
         loadUsers();
+        loadCurrencies();
         new Frame();
     }
 

@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class LoginPanel extends JPanel {
 
-    public LoginPanel() {
+    public LoginPanel(Frame parentFrame) {
         setLayout(new GridLayout(3, 2));
 
         add(new JLabel("Username:"));
@@ -29,8 +29,7 @@ public class LoginPanel extends JPanel {
             }
 
             if (Main.instance.login(usernameText, passwordText)) {
-                removeAll();
-                System.out.println("Logged in as " + Main.instance.loggedInUser.getUsername());
+                parentFrame.showCurrencyPanel();
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid username or password");
             }
@@ -40,7 +39,5 @@ public class LoginPanel extends JPanel {
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(e -> System.exit(0));
         add(exitButton);
-
-        setVisible(true);
     }
 }
