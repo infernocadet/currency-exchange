@@ -1,9 +1,14 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
-group = 'currency'
+group = 'currency.data'
 version = '1.0-SNAPSHOT'
+
+application {
+    mainClass = 'currency.Main'
+}
 
 repositories {
     mavenCentral()
