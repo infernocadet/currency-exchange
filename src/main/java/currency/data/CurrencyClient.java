@@ -30,8 +30,6 @@ public class CurrencyClient {
         }).build();
     }
 
-    public
-
     public Response fetchCurrencyData() {
         String rAction = "currencies";
         String rForm = ".json/";

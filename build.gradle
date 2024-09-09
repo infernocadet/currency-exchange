@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-group = 'currency.data'
+group = 'currency'
 version = '1.0-SNAPSHOT'
 
 application {
@@ -19,6 +19,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.14.6'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
 
 }
 
