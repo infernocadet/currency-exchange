@@ -1,29 +1,38 @@
-package data;
+package currency.data;
 
 import okhttp3.*;
-import org.json.simple.JSONArray;
 
 import java.io.IOException;
+import java.util.Currency;
 
-public class CurrencyLoader {
+public class CurrencyClient {
     private final String apiURL = "https://xecdapi.xe.com/v1/";
+    private static CurrencyClient client = new CurrencyClient();
     private final OkHttpClient httpClient;
 
-    public CurrencyLoader() {
-        this.httpClient = CurrencyLoader.getClient();
+    private CurrencyClient() {
+        this.httpClient = CurrencyClient.getClient();
+    }
+
+    public static synchronized CurrencyClient getCurrencyClient(){
+        if (client == null) {
+            client =  new CurrencyClient();
+        }
+        return client;
     }
 
     public static OkHttpClient getClient() {
-        OkHttpClient httpClient = new OkHttpClient.Builder().authenticator(new Authenticator() {
+        return new OkHttpClient.Builder().authenticator(new Authenticator() {
             public Request authenticate(Route route, Response response) throws IOException {
                 String credential = Credentials.basic("usyd509488321", "gs2aa6rv1lqpk5pvtpj5pgfpe7");
                 return response.request().newBuilder().header("Authorization", credential).build();
             }
         }).build();
-        return httpClient;
     }
 
-    public void fetchCurrencyData() {
+    public
+
+    public Response fetchCurrencyData() {
         String rAction = "currencies";
         String rForm = ".json/";
         HttpUrl.Builder urlBuilder = HttpUrl
@@ -39,17 +48,12 @@ public class CurrencyLoader {
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                System.out.println("Not good");
+                throw new IOException("Unexpected code " + response);
             } else {
-                System.out.println(response.code());
+                return response;
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) {
-        CurrencyLoader cLoader = new CurrencyLoader();
-        cLoader.fetchCurrencyData();
     }
 }
