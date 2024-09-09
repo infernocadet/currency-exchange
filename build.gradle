@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-group = 'data'
+group = 'currency.data'
 version = '1.0-SNAPSHOT'
 
 application {
