@@ -8,9 +8,11 @@ import currency.user.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class Main {
     public User loggedInUser;
     public List<User> users = new ArrayList<>();
     public List<Currency> currencies = new ArrayList<>();
-    private static final String JSON_FILE_PATH = "src/main/java/currency/data/currencies.json";
+    private static final String JSON_FILE_PATH = "src/main/resources/currencies.json";
 
     public boolean login(String username, String password) {
         for (User user : users) {
@@ -50,17 +52,32 @@ public class Main {
     }
 
     public void initialLoad() {
+        JSONParser parser = new JSONParser();
         File jsonFile = new File(JSON_FILE_PATH);
 
-        if (!jsonFile.exists()) {
-            System.out.println("Loading currencies from existing JSON...");
-        } else {
-            System.out.println("JSON File not found - making new JSON...");
-            Parser parser = new Parser();
-            parser.parseTxtToJson();
-        }
-//        List<Currency> currencies = loadCurrencies();
+        try {
+            if (jsonFile.exists()) {
+                System.out.println("Loading currencies from existing JSON...");
+                JSONArray currencyArray = (JSONArray) parser.parse(new FileReader(JSON_FILE_PATH));
 
+                // TODO: load currencies in from the json or soemthing just use the json ig
+
+                System.out.println("Currencies loaded from JSON file.");
+            } else {
+
+                // if json doesnt exist yet (first run) then make it and parse .txt to json
+
+                System.out.println("JSON File not found - creating new JSON...");
+                Parser txtToJsonParser = new Parser();
+                txtToJsonParser.parseTxtToJson(); // Converts .txt to .json
+
+                // TODO: load the currencies
+                System.out.println("Currencies created and loaded from new JSON file.");
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+            System.out.println("An error occurred while reading or parsing the JSON file.");
+        }
     }
 
     public void loadCurrencies() {
