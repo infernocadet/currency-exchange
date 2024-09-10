@@ -31,7 +31,7 @@ public class Frame extends JFrame {
         if (currentPanel != null) {
             remove(currentPanel);
         }
-        setSize(400, 200);
+        setSize(500, 200);
         currentPanel = new CurrencyPanel(this);
         add(currentPanel);
         revalidate();
