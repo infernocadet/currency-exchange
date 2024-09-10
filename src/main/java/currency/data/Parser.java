@@ -95,6 +95,7 @@ public class Parser {
                     currenciesArray.add(currencyNode);
                 }
                 objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(JSON_FILE_PATH), currenciesArray);
+
             } else {
                 System.out.println("Error: Main.instance or currencies is null");
             }

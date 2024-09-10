@@ -29,4 +29,9 @@ public class Currency {
                 .findFirst()
                 .orElse(null);
     }
+
+    public String toString(){
+        String misname = String.format("%s: ", this.name);
+        return misname + exchangeRates.toString();
+    }
 }

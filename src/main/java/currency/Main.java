@@ -23,6 +23,7 @@ public class Main {
     public List<User> users = new ArrayList<>();
     public List<Currency> currencies = new ArrayList<>();
     private static final String JSON_FILE_PATH = "src/main/resources/currencies.json";
+    public RateHistoryManager rateHistoryManager;
 
     public boolean login(String username, String password) {
         for (User user : users) {
@@ -90,7 +91,7 @@ public class Main {
     public Main() {
         instance = this;
         initialLoad();
-        RateHistoryManager rateHistoryManager =  new RateHistoryManager();
+        this.rateHistoryManager = new RateHistoryManager();
         new Frame();
     }
 

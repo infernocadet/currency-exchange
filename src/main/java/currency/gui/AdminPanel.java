@@ -81,6 +81,7 @@ public class AdminPanel extends JPanel {
                 // Add the new currency to the main list
                 Main.instance.currencies.add(newCurrency);
                 new Parser().updateJson();
+                Main.instance.rateHistoryManager.appendRateHistory(newCurrency);
                 JOptionPane.showMessageDialog(this, "Currency added successfully.");
 
             } catch (Exception ex) {

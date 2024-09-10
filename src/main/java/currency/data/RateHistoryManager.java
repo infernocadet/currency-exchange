@@ -8,6 +8,8 @@ import java.nio.file.*;
 import java.util.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import currency.currency.Currency;
+
 
 // this manages creating a csv file which tracks aa complete history of all changes in rate_history.csv
 // rate_history.csv is used to track history of currency exchanges
@@ -76,6 +78,24 @@ public class RateHistoryManager {
             System.out.println("Rate history updated.");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void appendRateHistory(Currency newCurrency) {
+        LocalDate today = LocalDate.now();
+
+        // iterate thru ex-rates and record
+        for (Map.Entry<String, Double> in : newCurrency.getExchangeRates().entrySet()) {
+            String toCurrency = in.getKey();
+            double rate = in.getValue();
+            appendRateHistory(newCurrency.getName(), toCurrency, rate, today);
+
+            // add reciprocal
+            Currency existing = Currency.getCurrencyByName(toCurrency);
+            if (existing != null) {
+                double reciprocal = 1 / rate;
+                appendRateHistory(toCurrency, newCurrency.getName(), reciprocal, today);
+            }
         }
     }
 
