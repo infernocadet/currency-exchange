@@ -1,6 +1,15 @@
 plugins {
     id 'java'
     id 'application'
+    id 'jacoco'
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = false
+        csv.required = false
+    }
+    dependsOn test
 }
 
 group = 'currency'
@@ -25,4 +34,5 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
