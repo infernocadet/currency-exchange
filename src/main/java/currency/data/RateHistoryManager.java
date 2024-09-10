@@ -117,7 +117,7 @@ public class RateHistoryManager {
                 if (entryFrom.equals(fromCurrency) && entryTo.equals(toCurrency)
                         && (entryDate.isEqual(startDate) || entryDate.isAfter(startDate))
                         && (entryDate.isEqual(endDate) || entryDate.isBefore(endDate))) {
-                    historyRecords.add(parts);
+                    historyRecords.add(parts); // list of multiple of these things: [[YYYY-MM-DD, AUD, USD, 0.73]]
                 }
 
             }
@@ -127,6 +127,8 @@ public class RateHistoryManager {
 
         return historyRecords;
     }
+
+
 
 
 
