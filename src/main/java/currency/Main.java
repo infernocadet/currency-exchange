@@ -2,6 +2,7 @@ package currency;
 
 import currency.currency.Currency;
 import currency.data.Parser;
+import currency.data.RateHistoryManager;
 import currency.gui.Frame;
 import currency.user.Role;
 import currency.user.User;
@@ -88,6 +89,7 @@ public class Main {
     public Main() {
         instance = this;
         initialLoad();
+        RateHistoryManager rateHistoryManager =  new RateHistoryManager();
         new Frame();
     }
 
