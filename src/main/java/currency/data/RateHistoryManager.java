@@ -31,6 +31,7 @@ public class RateHistoryManager {
                 System.out.println("History CSV created: " + HISTORY_FILE_PATH);
 
                 // then initialise rate history
+                System.out.println("Initialising rate history");
                 initialRateHistory();
             } catch (IOException e) {
                 e.printStackTrace();

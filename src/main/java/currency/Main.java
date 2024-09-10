@@ -2,6 +2,7 @@ package currency;
 
 import currency.currency.Currency;
 import currency.data.Parser;
+import currency.data.RateHistoryManager;
 import currency.gui.Frame;
 import currency.user.Role;
 import currency.user.User;
@@ -71,6 +72,7 @@ public class Main {
                 Parser txtToJsonParser = new Parser();
                 txtToJsonParser.parseTxtToJson(); // Converts .txt to .json
 
+
                 // TODO: load the currencies
                 System.out.println("Currencies created and loaded from new JSON file.");
             }
@@ -110,6 +112,7 @@ public class Main {
         loadUsers();
         loadCurrencies();
         initialLoad();
+        RateHistoryManager rateHistoryManager =  new RateHistoryManager();
         new Frame();
     }
 
