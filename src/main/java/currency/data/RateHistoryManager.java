@@ -70,6 +70,7 @@ public class RateHistoryManager {
     // write a new currency exchange amendment
     // if the admin wants to update a rate, Main class should call RateHistoryManager.appendRateHistory() etc to record the change
     public void appendRateHistory(String fromCurrency, String toCurrency, double rate, LocalDate date) {
+
         try (FileWriter writer = new FileWriter(HISTORY_FILE_PATH, true)) {  // true means we will append
             writer.append(String.format("%s,%s,%s,%.2f\n", date.format(DATE_FORMATTER), fromCurrency, toCurrency, rate));
             System.out.println("Rate history updated.");
