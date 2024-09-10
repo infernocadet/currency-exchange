@@ -1,5 +1,7 @@
 package currency.user;
 
+import java.util.Objects;
+
 public class User {
 
     private String username;
@@ -7,9 +9,12 @@ public class User {
     private Role role;
 
     public User(String username, String password, Role role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
+        if (username == null || password == null || role == null) {
+            throw new NullPointerException("Username, password, and role cannot be null");
+        }
+            this.username = username;
+            this.password = password;
+            this.role = role;
     }
 
     public String getUsername() {
@@ -22,5 +27,20 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                role == user.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, role);
     }
 }
