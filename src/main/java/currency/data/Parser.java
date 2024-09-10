@@ -3,6 +3,7 @@ package currency.data;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -13,8 +14,8 @@ import currency.currency.Currency;
 // all this class does is convert the .txt to json. the app will use the .json as its active source of currencies
 
 public class Parser {
-    private static final String TXT_FILE_PATH = "src/main/java/currency/data/staticCurrencies.txt";
-    private static final String JSON_FILE_PATH = "src/main/java/currency/data/currencies.json";
+    private static final String TXT_FILE_PATH = "src/main/resources/staticCurrencies.txt";
+    private static final String JSON_FILE_PATH = "src/main/resources/currencies.json";
 
     /**
      * all this does is read thru the txt file adn then writes content to json. json is used to load current exchange rate stuff
@@ -22,6 +23,8 @@ public class Parser {
     public void parseTxtToJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode currenciesArray = objectMapper.createArrayNode(); // json array which holds currency objects
+        String currentDate = LocalDate.now().toString(); // current date in 'yyyy-mm-dd'
+
 
         try (BufferedReader br = new BufferedReader(new FileReader(TXT_FILE_PATH))) {
             String line;
@@ -51,7 +54,10 @@ public class Parser {
 
                     // then add exchange rate to the current currencies exchangeRate object
                     ObjectNode exchangeRatesNode = (ObjectNode) currentCurrencyNode.get("exchangeRates");
-                    exchangeRatesNode.put(targetCurrency, rate);
+                    ObjectNode rateNode = objectMapper.createObjectNode();
+                    rateNode.put("rate", rate);
+                    rateNode.put("lastUpdated", currentDate);
+                    exchangeRatesNode.put(targetCurrency, rateNode);
                 }
             }
 
