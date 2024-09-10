@@ -4,12 +4,21 @@ plugins {
     id 'jacoco'
 }
 
+def jacocoExclude = [
+        'currency/gui/**'
+]
+
 jacocoTestReport {
     reports {
         xml.required = false
         csv.required = false
     }
     dependsOn test
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: jacocoExclude)
+        }))
+    }
 }
 
 group = 'currency'
