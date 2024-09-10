@@ -14,13 +14,17 @@ import currency.currency.Currency;
 // all this class does is convert the .txt to json. the app will use the .json as its active source of currencies
 
 public class Parser {
-    private static final String TXT_FILE_PATH = "src/main/resources/staticCurrencies.txt";
-    private static final String JSON_FILE_PATH = "src/main/resources/currencies.json";
+    private static final String DEFAULT_TXT_FILE_PATH = "src/main/resources/staticCurrencies.txt";
+    private static final String DEFAULT_JSON_FILE_PATH = "src/main/resources/currencies.json";
+
+    public void parseTxtToJson() {
+        parseTxtToJson(DEFAULT_TXT_FILE_PATH, DEFAULT_JSON_FILE_PATH);
+    }
 
     /**
      * all this does is read thru the txt file adn then writes content to json. json is used to load current exchange rate stuff
      */
-    public void parseTxtToJson() {
+    public void parseTxtToJson(String TXT_FILE_PATH, String JSON_FILE_PATH) {
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode currenciesArray = objectMapper.createArrayNode(); // json array which holds currency objects
         String currentDate = LocalDate.now().toString(); // current date in 'yyyy-mm-dd'
@@ -69,23 +73,31 @@ public class Parser {
     }
 
     public void updateJson() {
+        updateJson(DEFAULT_JSON_FILE_PATH);
+    }
+
+    public void updateJson(String JSON_FILE_PATH) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ArrayNode currenciesArray = objectMapper.createArrayNode();
-            for (Currency currency : Main.instance.currencies) {
-                ObjectNode currencyNode = new ObjectMapper().createObjectNode();
-                currencyNode.put("code", currency.getName());
-                ObjectNode exchangeRatesNode = new ObjectMapper().createObjectNode();
-                for (Map.Entry<String, Double> entry : currency.getExchangeRates().entrySet()) {
-                    ObjectNode rateNode = new ObjectMapper().createObjectNode();
-                    rateNode.put("rate", entry.getValue());
-                    rateNode.put("lastUpdated", LocalDate.now().toString());
-                    exchangeRatesNode.put(entry.getKey(), rateNode);
+            if (Main.instance != null && Main.instance.currencies != null) {
+                for (Currency currency : Main.instance.currencies) {
+                    ObjectNode currencyNode = new ObjectMapper().createObjectNode();
+                    currencyNode.put("code", currency.getName());
+                    ObjectNode exchangeRatesNode = new ObjectMapper().createObjectNode();
+                    for (Map.Entry<String, Double> entry : currency.getExchangeRates().entrySet()) {
+                        ObjectNode rateNode = new ObjectMapper().createObjectNode();
+                        rateNode.put("rate", entry.getValue());
+                        rateNode.put("lastUpdated", LocalDate.now().toString());
+                        exchangeRatesNode.put(entry.getKey(), rateNode);
+                    }
+                    currencyNode.set("exchangeRates", exchangeRatesNode);
+                    currenciesArray.add(currencyNode);
                 }
-                currencyNode.set("exchangeRates", exchangeRatesNode);
-                currenciesArray.add(currencyNode);
+                objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(JSON_FILE_PATH), currenciesArray);
+            } else {
+                System.out.println("Error: Main.instance or currencies is null");
             }
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(JSON_FILE_PATH), currenciesArray);
         } catch (Exception e) {
             System.out.println("Error updating JSON: " + e.getMessage());
         }
