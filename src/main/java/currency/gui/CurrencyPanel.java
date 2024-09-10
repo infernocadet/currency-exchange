@@ -16,6 +16,9 @@ public class CurrencyPanel extends JPanel {
         JPanel convertPanel = new JPanel();
         JLabel amountLabel = new JLabel("Amount:");
         JTextField amountField = new JTextField(10);
+
+        JLabel fromCurrencyLabel = new JLabel("From Currency:");
+        JLabel toCurrencyLabel = new JLabel("To Currency:");
         JComboBox<String> fromCurrency = new JComboBox<>(Main.instance.currencies.stream().map(Currency::getName).toArray(String[]::new));
         JComboBox<String> toCurrency = new JComboBox<>(Main.instance.currencies.stream().map(Currency::getName).toArray(String[]::new));
         JButton convertButton = new JButton("Convert");
@@ -36,7 +39,11 @@ public class CurrencyPanel extends JPanel {
 
         convertPanel.add(amountLabel);
         convertPanel.add(amountField);
+
+        convertPanel.add(fromCurrencyLabel);
         convertPanel.add(fromCurrency);
+
+        convertPanel.add(toCurrencyLabel);
         convertPanel.add(toCurrency);
         convertPanel.add(convertButton);
 

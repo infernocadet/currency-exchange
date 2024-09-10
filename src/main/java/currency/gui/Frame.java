@@ -31,7 +31,7 @@ public class Frame extends JFrame {
         if (currentPanel != null) {
             remove(currentPanel);
         }
-        setSize(500, 200);
+        setSize(750, 350);
         currentPanel = new CurrencyPanel(this);
         add(currentPanel);
         revalidate();
@@ -42,10 +42,12 @@ public class Frame extends JFrame {
         if (currentPanel != null) {
             remove(currentPanel);
         }
-        setSize(600, 200);
+        setSize(600, 300);
         currentPanel = new AdminPanel(this);
         add(currentPanel);
         revalidate();
         repaint();
     }
+
+
 }
