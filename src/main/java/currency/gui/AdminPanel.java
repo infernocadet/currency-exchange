@@ -2,6 +2,7 @@ package currency.gui;
 
 import currency.Main;
 import currency.currency.Currency;
+import currency.data.Parser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,6 +80,7 @@ public class AdminPanel extends JPanel {
 
                 // Add the new currency to the main list
                 Main.instance.currencies.add(newCurrency);
+                new Parser().updateJson();
                 JOptionPane.showMessageDialog(this, "Currency added successfully.");
 
             } catch (Exception ex) {

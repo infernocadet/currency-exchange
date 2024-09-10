@@ -79,8 +79,7 @@ public class Main {
             System.out.println("Currencies loaded from JSON file.");
         } else {
             System.out.println("JSON File not found - creating new JSON...");
-            Parser txtToJsonParser = new Parser();
-            txtToJsonParser.parseTxtToJson();
+            new Parser().parseTxtToJson();
             loadCurrencies();
             System.out.println("Currencies created and loaded from new JSON file.");
         }

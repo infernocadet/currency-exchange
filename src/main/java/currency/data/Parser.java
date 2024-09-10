@@ -1,13 +1,13 @@
 package currency.data;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.*;
 import java.time.LocalDate;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import currency.Main;
 import currency.currency.Currency;
 
 
@@ -24,7 +24,6 @@ public class Parser {
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode currenciesArray = objectMapper.createArrayNode(); // json array which holds currency objects
         String currentDate = LocalDate.now().toString(); // current date in 'yyyy-mm-dd'
-
 
         try (BufferedReader br = new BufferedReader(new FileReader(TXT_FILE_PATH))) {
             String line;
@@ -65,8 +64,30 @@ public class Parser {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(JSON_FILE_PATH), currenciesArray);
             System.out.println("Wrote currencies from .txt to .json file.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error parsing .txt to .json: " + e.getMessage());
         }
     }
 
+    public void updateJson() {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ArrayNode currenciesArray = objectMapper.createArrayNode();
+            for (Currency currency : Main.instance.currencies) {
+                ObjectNode currencyNode = new ObjectMapper().createObjectNode();
+                currencyNode.put("code", currency.getName());
+                ObjectNode exchangeRatesNode = new ObjectMapper().createObjectNode();
+                for (Map.Entry<String, Double> entry : currency.getExchangeRates().entrySet()) {
+                    ObjectNode rateNode = new ObjectMapper().createObjectNode();
+                    rateNode.put("rate", entry.getValue());
+                    rateNode.put("lastUpdated", LocalDate.now().toString());
+                    exchangeRatesNode.put(entry.getKey(), rateNode);
+                }
+                currencyNode.set("exchangeRates", exchangeRatesNode);
+                currenciesArray.add(currencyNode);
+            }
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(JSON_FILE_PATH), currenciesArray);
+        } catch (Exception e) {
+            System.out.println("Error updating JSON: " + e.getMessage());
+        }
+    }
 }
