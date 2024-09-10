@@ -1,5 +1,6 @@
 package currency.data;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
@@ -41,6 +42,28 @@ public class RateHistoryManager {
     public void initialRateHistory(){
         ObjectMapper objectMapper = new ObjectMapper();
         LocalDate currentDate = LocalDate.now();
+
+        // need to read current exchange rates from json and add this to rate history
+        try {
+            JsonNode rootNode = objectMapper.readTree(new File(JSON_FILE_PATH));
+
+            for (JsonNode currencyNode : rootNode) {
+                String fromCurrency = currencyNode.get("code").asText();
+                JsonNode exchangeRates = currencyNode.get("exchangeRates");
+
+                // then go thru each target currency and the associated rate
+                Iterator<Map.Entry<String, JsonNode>> fieldsIterator = exchangeRates.fields();
+                while (fieldsIterator.hasNext()) {
+                    Map.Entry<String, JsonNode> rateEntry = fieldsIterator.next();
+                    String toCurrency = rateEntry.getKey();
+                    double rate = rateEntry.getValue().get("rate").asDouble();
+
+                    appendRateHistory(fromCurrency, toCurrency, rate, currentDate);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // write a new currency exchange amendment
