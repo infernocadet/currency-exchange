@@ -6,6 +6,7 @@ import currency.data.Parser;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class AdminPanel extends JPanel {
 
             try {
                 // Create the new currency object
-                Currency newCurrency = new Currency(newCurrencyName);
+                Currency newCurrency = new Currency(newCurrencyName, LocalDate.now());
 
                 // Add exchange rates for the new currency
                 for (Map.Entry<String, JTextField> entry : exchangeRateFields.entrySet()) {
