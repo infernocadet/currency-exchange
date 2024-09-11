@@ -59,4 +59,15 @@ public class Frame extends JFrame {
         revalidate();
         repaint();
     }
+
+    public void showConfigureCurrencyPanel() {
+        if (currentPanel != null) {
+            remove(currentPanel);
+        }
+        setSize(500, 300);
+        currentPanel = new ConfigureCurrencyPanel(this);
+        add(currentPanel);
+        revalidate();
+        repaint();
+    }
 }
