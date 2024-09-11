@@ -82,6 +82,9 @@ public class CurrencyPanel extends JPanel {
             }
         }
 
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+
         JTable table = new JTable(data, columns);
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
@@ -91,7 +94,16 @@ public class CurrencyPanel extends JPanel {
             adminButton.addActionListener(e -> {
                 parentFrame.showAdminPanel();
             });
-            add(adminButton, BorderLayout.SOUTH);
+            buttonPanel.add(adminButton);
         }
+
+        // summary panel button
+        JButton summaryButton = new JButton("Summary");
+        summaryButton.addActionListener(e -> {
+            parentFrame.showSummaryPanel();
+        });
+        buttonPanel.add(summaryButton);
+
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 }
