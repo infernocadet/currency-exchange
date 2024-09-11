@@ -33,7 +33,7 @@ public class ExchangeRatePanel extends JPanel {
         }
 
         JLabel dateLabel = new JLabel("Enter date (yyyy-MM-dd): ");
-        JTextField dateTextField = new JTextField(15);
+        JTextField dateTextField = new JTextField(LocalDate.now().toString());
         exchangeRatesPanel.add(dateLabel);
         exchangeRatesPanel.add(dateTextField);
 
