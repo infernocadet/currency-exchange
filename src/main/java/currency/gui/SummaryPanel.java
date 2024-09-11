@@ -24,11 +24,11 @@ public class SummaryPanel extends JPanel {
         setLayout(new BorderLayout());
 
         JPanel summaryPanel = new JPanel();
-        summaryPanel.setLayout(new GridLayout(5, 2));  // Arrange components in a grid
+        summaryPanel.setLayout(new GridLayout(5, 2));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // Create and add components for user input
+        // labels and options added to the panel
         JLabel fromCurrencyLabel = new JLabel("From Currency:");
         fromCurrencyCombo = new JComboBox<>(Main.instance.currencies.stream().map(Currency::getName).toArray(String[]::new));
 
@@ -41,7 +41,7 @@ public class SummaryPanel extends JPanel {
         JLabel endDateLabel = new JLabel("End Date (yyyy-MM-dd):");
         endDateField = new JTextField(10);
 
-        // Add input components to the panel
+
         summaryPanel.add(fromCurrencyLabel);
         summaryPanel.add(fromCurrencyCombo);
         summaryPanel.add(toCurrencyLabel);
@@ -51,27 +51,25 @@ public class SummaryPanel extends JPanel {
         summaryPanel.add(endDateLabel);
         summaryPanel.add(endDateField);
 
-        // Button to calculate statistics
+
         JButton calculateButton = new JButton("Calculate Summary");
 
-        // Result area to display the statistics
         resultArea = new JTextArea(10, 30);
         resultArea.setEditable(false);
 
-        // Add action listener for the calculate button
         calculateButton.addActionListener(e -> {
             try {
-                // Parse dates and get selected currencies
+
                 LocalDate startDate = LocalDate.parse(startDateField.getText(), formatter);
                 LocalDate endDate = LocalDate.parse(endDateField.getText(), formatter);
                 String fromCurrency = (String) fromCurrencyCombo.getSelectedItem();
                 String toCurrency = (String) toCurrencyCombo.getSelectedItem();
 
-                // Retrieve statistics from RateHistoryManager
+                // use the rate history manager from the main instance and call summary method
                 RateHistoryManager manager = Main.instance.rateHistoryManager;
                 Map<String, Double> statistics = manager.getSummaryStatistics(fromCurrency, toCurrency, startDate, endDate);
 
-                // Display the results
+                // e.g. if picks history of rates between AUD and AUD. this shouldnt appear on the csv
                 if (statistics.isEmpty()) {
                     resultArea.setText("No data available for the selected range.");
                 } else {
@@ -85,14 +83,15 @@ public class SummaryPanel extends JPanel {
             }
         });
 
-        // Add components to the panel
-        summaryPanel.add(calculateButton);  // Add button to the grid panel
-        add(summaryPanel, BorderLayout.NORTH);  // Add grid panel to the north
 
-        // Add result area in a scroll pane
+        summaryPanel.add(calculateButton);
+        add(summaryPanel, BorderLayout.NORTH);
+
+
         JScrollPane scrollPane = new JScrollPane(resultArea);
-        add(scrollPane, BorderLayout.CENTER);  // Add scroll pane to the center
+        add(scrollPane, BorderLayout.CENTER);
 
+        // back button taken from admin panel
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {
             parentFrame.showCurrencyPanel();
