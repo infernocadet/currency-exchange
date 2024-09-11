@@ -3,6 +3,7 @@ import currency.currency.Currency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -15,8 +16,8 @@ class CurrencyTest {
 
     @BeforeEach
     void setUp() {
-        usd = new Currency("USD");
-        eur = new Currency("EUR");
+        usd = new Currency("USD", LocalDate.now());
+        eur = new Currency("EUR", LocalDate.now());
 
         usd.getExchangeRates().put("EUR", 0.85);
         eur.getExchangeRates().put("USD", 1.18);
@@ -29,7 +30,7 @@ class CurrencyTest {
 
     @Test
     void testConstructor() {
-        Currency currency = new Currency("GBP");
+        Currency currency = new Currency("GBP", LocalDate.now());
         assertEquals("GBP", currency.getName());
         assertTrue(currency.getExchangeRates().isEmpty());
     }

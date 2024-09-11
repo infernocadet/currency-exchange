@@ -49,8 +49,10 @@ public class ExchangeRatePanel extends JPanel {
                 for (Map.Entry<String, JTextField> exchangeField : exchangeRateFields.entrySet()) {
                     double rate = Double.parseDouble(exchangeField.getValue().getText());
                     if (rate != currency.getExchangeRates().get(exchangeField.getKey())) {
-                        currency.getExchangeRates().put(exchangeField.getKey(), rate);
-                        new Parser().updateJson();
+                        if (date.isAfter(currency.getLastUpdated())) {
+                            currency.getExchangeRates().put(exchangeField.getKey(), rate);
+                            new Parser().updateJson();
+                        }
                         Main.instance.rateHistoryManager.appendRateHistory(currency.getName(), exchangeField.getKey(), rate, date);
                     }
                 }

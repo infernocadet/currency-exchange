@@ -61,10 +61,11 @@ public class Main {
                 JSONObject currencyJSON = (JSONObject) currencyObject;
                 String code = (String) currencyJSON.get("code");
                 JSONObject exchangeRates = (JSONObject) currencyJSON.get("exchangeRates");
-                Currency currency = new Currency(code);
+                Currency currency = new Currency(code, LocalDate.now());
                 for (Object rateObject : exchangeRates.keySet()) {
                     String targetCurrency = (String) rateObject;
                     JSONObject rate = (JSONObject) exchangeRates.get(targetCurrency);
+                    currency.setLastUpdated(LocalDate.parse(rate.get("lastUpdated").toString()));
                     currency.getExchangeRates().put(targetCurrency, (double) rate.get("rate"));
                 }
                 currencies.add(currency);

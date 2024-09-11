@@ -63,10 +63,10 @@ class ParserTest {
     @Test
     void testUpdateJson() throws Exception {
         Main.instance = new Main();
-        Currency usd = new Currency("USD");
+        Currency usd = new Currency("USD", LocalDate.now());
         usd.getExchangeRates().put("EUR", 0.85);
         usd.getExchangeRates().put("GBP", 0.75);
-        Currency eur = new Currency("EUR");
+        Currency eur = new Currency("EUR", LocalDate.now());
         eur.getExchangeRates().put("USD", 1.18);
         eur.getExchangeRates().put("GBP", 0.88);
         Main.instance.currencies = Arrays.asList(usd, eur);
