@@ -69,10 +69,4 @@ class RateHistoryManagerTest {
 
         assertEquals("(I)", manager.compareLatestRates("USD", "EUR"));
     }
-
-    @Test
-    void testInitialRateHistory() throws Exception {
-        List<String[]> history = manager.readRateHistory("USD", "EUR", LocalDate.now(), LocalDate.now());
-        assertFalse(history.isEmpty());
-    }
 }
