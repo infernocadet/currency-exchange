@@ -49,17 +49,14 @@ public class CurrencyPanel extends JPanel {
 
         add(convertPanel, BorderLayout.NORTH);
 
-        // Get the list of current active currencies
         List<Currency> currencyList = Main.instance.activeCurrencies;
 
-        // Create the columns for the table
         String[] columns = new String[currencyList.size() + 1];
         columns[0] = "From/To";
         for (int i = 0; i < currencyList.size(); i++) {
             columns[i + 1] = currencyList.get(i).getName();
         }
 
-        // Create the data for the table
         String[][] data = new String[currencyList.size()][currencyList.size() + 1];
         for (int i = 0; i < currencyList.size(); i++) {
             data[i][0] = currencyList.get(i).getName();
@@ -86,6 +83,8 @@ public class CurrencyPanel extends JPanel {
         buttonPanel.setLayout(new FlowLayout());
 
         JTable table = new JTable(data, columns);
+        table.setDefaultEditor(Object.class, null);
+
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
 
@@ -97,7 +96,6 @@ public class CurrencyPanel extends JPanel {
             buttonPanel.add(adminButton);
         }
 
-        // summary panel button
         JButton summaryButton = new JButton("Summary");
         summaryButton.addActionListener(e -> {
             parentFrame.showSummaryPanel();

@@ -16,8 +16,6 @@ public class AdminPanel extends JPanel {
     public AdminPanel(Frame parentFrame) {
         setLayout(new BorderLayout());
 
-        JPanel topPanel = new JPanel(new BorderLayout());
-
         JPanel addCurrencyPanel = new JPanel();
         JLabel currencyLabel = new JLabel("Currency:");
         JTextField currencyField = new JTextField(10);
