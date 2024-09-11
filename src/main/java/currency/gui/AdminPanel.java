@@ -101,10 +101,34 @@ public class AdminPanel extends JPanel {
         add(exchangeRatesPanel, BorderLayout.CENTER);
 
 
+        JPanel modifyCurrencyPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JComboBox<String> currencyComboBox = new JComboBox<>(Main.instance.activeCurrencies.stream().map(Currency::getName).toArray(String[]::new));
+        JButton modifyExchangeRateButton = new JButton("Modify Exchange Rates");
+
+        modifyExchangeRateButton.addActionListener(e -> {
+            String selectedCurrency = (String) currencyComboBox.getSelectedItem();
+            if (selectedCurrency != null) {
+                Currency existingCurrency = Currency.getCurrencyByName(selectedCurrency);
+                if (existingCurrency != null) {
+                    parentFrame.showExchangeRatePanel(existingCurrency);
+                }
+            }
+        });
+
+        modifyCurrencyPanel.add(currencyComboBox);
+        modifyCurrencyPanel.add(modifyExchangeRateButton);
+
+        JPanel backButtonPanel = new JPanel();
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {
             parentFrame.showCurrencyPanel();
         });
-        add(backButton, BorderLayout.SOUTH);
+        backButtonPanel.add(backButton);
+
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(modifyCurrencyPanel, BorderLayout.NORTH);
+        bottomPanel.add(backButtonPanel, BorderLayout.SOUTH);
+
+        add(bottomPanel, BorderLayout.SOUTH);
     }
 }

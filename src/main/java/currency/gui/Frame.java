@@ -1,5 +1,7 @@
 package currency.gui;
 
+import currency.currency.Currency;
+
 import javax.swing.*;
 
 public class Frame extends JFrame {
@@ -66,6 +68,17 @@ public class Frame extends JFrame {
         }
         setSize(500, 300);
         currentPanel = new ConfigureCurrencyPanel(this);
+        add(currentPanel);
+        revalidate();
+        repaint();
+    }
+
+    public void showExchangeRatePanel(Currency currency) {
+        if (currentPanel != null) {
+            remove(currentPanel);
+        }
+        setSize(500, 300);
+        currentPanel = new ExchangeRatePanel(this, currency);
         add(currentPanel);
         revalidate();
         repaint();
