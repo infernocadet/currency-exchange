@@ -22,6 +22,7 @@ public class Main {
     public User loggedInUser;
     public List<User> users = new ArrayList<>();
     public List<Currency> currencies = new ArrayList<>();
+    public List<Currency> activeCurrencies = new ArrayList<>(); // will store the four main currencies to display
     private static final String JSON_FILE_PATH = "src/main/resources/currencies.json";
     public RateHistoryManager rateHistoryManager;
 
@@ -68,6 +69,13 @@ public class Main {
                 }
                 currencies.add(currency);
             }
+
+            // after we load all currencies into memory, then we need to just select 4 currencies to put in the activeCurrencies
+            // when initial load, it'll be the first four. this can be changed later
+            for (int i = 0; i < 4; i++){
+                activeCurrencies.add(currencies.get(i));
+            }
+
         } catch (Exception e) {
             System.out.println("Error loading currencies: " + e.getMessage());
         }

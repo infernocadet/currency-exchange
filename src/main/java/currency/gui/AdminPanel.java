@@ -16,6 +16,8 @@ public class AdminPanel extends JPanel {
     public AdminPanel(Frame parentFrame) {
         setLayout(new BorderLayout());
 
+        JPanel topPanel = new JPanel(new BorderLayout());
+
         JPanel addCurrencyPanel = new JPanel();
         JLabel currencyLabel = new JLabel("Currency:");
         JTextField currencyField = new JTextField(10);
@@ -89,9 +91,17 @@ public class AdminPanel extends JPanel {
             }
         });
 
+        JButton configureCurrencyButton = new JButton("Configure Currencies...");
+        configureCurrencyButton.addActionListener(e -> {
+            parentFrame.showConfigureCurrencyPanel();
+        });
+
+
+        addCurrencyPanel.add(addCurrencyButton);
+        addCurrencyPanel.add(configureCurrencyButton);
         add(addCurrencyPanel, BorderLayout.NORTH);
         add(exchangeRatesPanel, BorderLayout.CENTER);
-        addCurrencyPanel.add(addCurrencyButton);
+
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {

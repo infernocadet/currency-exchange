@@ -19,8 +19,8 @@ public class CurrencyPanel extends JPanel {
 
         JLabel fromCurrencyLabel = new JLabel("From Currency:");
         JLabel toCurrencyLabel = new JLabel("To Currency:");
-        JComboBox<String> fromCurrency = new JComboBox<>(Main.instance.currencies.stream().map(Currency::getName).toArray(String[]::new));
-        JComboBox<String> toCurrency = new JComboBox<>(Main.instance.currencies.stream().map(Currency::getName).toArray(String[]::new));
+        JComboBox<String> fromCurrency = new JComboBox<>(Main.instance.activeCurrencies.stream().map(Currency::getName).toArray(String[]::new));
+        JComboBox<String> toCurrency = new JComboBox<>(Main.instance.activeCurrencies.stream().map(Currency::getName).toArray(String[]::new));
         JButton convertButton = new JButton("Convert");
 
         convertButton.addActionListener(e -> {
@@ -49,8 +49,8 @@ public class CurrencyPanel extends JPanel {
 
         add(convertPanel, BorderLayout.NORTH);
 
-        // Get the list of all currencies
-        List<Currency> currencyList = Main.instance.currencies;
+        // Get the list of current active currencies
+        List<Currency> currencyList = Main.instance.activeCurrencies;
 
         // Create the columns for the table
         String[] columns = new String[currencyList.size() + 1];
