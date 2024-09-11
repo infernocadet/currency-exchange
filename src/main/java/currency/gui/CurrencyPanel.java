@@ -70,8 +70,7 @@ public class CurrencyPanel extends JPanel {
                     Double exchangeRate = currencyFrom.getExchangeRates().get(currencyTo.getName());
 
                     if (exchangeRate != null) {
-                        //TODO: Check if rate increased or decreased
-                        data[i][j] = String.format("%.2f", exchangeRate);
+                        data[i][j] = String.format("%.2f %s", exchangeRate, Main.instance.rateHistoryManager.compareLatestRates(currencyFrom.getName(), currencyTo.getName()));
                     } else {
                         data[i][j] = "";
                     }
