@@ -49,5 +49,14 @@ public class Frame extends JFrame {
         repaint();
     }
 
-
+    public void showSummaryPanel() {
+        if (currentPanel != null) {
+            remove(currentPanel);
+        }
+        setSize(500, 300);
+        currentPanel = new SummaryPanel(this);
+        add(currentPanel);
+        revalidate();
+        repaint();
+    }
 }

@@ -8,6 +8,8 @@ import java.nio.file.*;
 import java.util.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
+
 import currency.currency.Currency;
 
 
@@ -128,13 +130,45 @@ public class RateHistoryManager {
         return historyRecords;
     }
 
+    public Map<String, Double> getSummaryStatistics(String fromCurrency, String toCurrency, LocalDate startDate, LocalDate endDate){
+        List<String[]> historyRecords = readRateHistory(fromCurrency, toCurrency, startDate, endDate);
+        List<Double> rates = historyRecords.stream().map(record -> Double.parseDouble(record[3])).collect(Collectors.toList());
 
+        if (rates.isEmpty()) {
+            return Collections.emptyMap();
+        }
 
+        double average = rates.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        double median = calculateMedian(rates);
+        double max = rates.stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+        double min = rates.stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
+        double stdDev = calculateStandardDeviation(rates, average);
 
+        Map<String, Double> statistics = new HashMap<>();
+        statistics.put("Average", average);
+        statistics.put("Median", median);
+        statistics.put("Maximum", max);
+        statistics.put("Minimum", min);
+        statistics.put("Standard Deviation", stdDev);
 
+        return statistics;
+    }
 
+    private double calculateMedian(List<Double> rates) {
+        Collections.sort(rates);
+        int size = rates.size();
+        if (size % 2 == 0){
+            return(rates.get(size / 2 - 1) + rates.get(size / 2)) / 2.0; // if there is even number take between of middle
+        } else {
+            return rates.get(size / 2); // or just get middle value
+        }
+    }
 
+    private double calculateStandardDeviation(List<Double> rates, double mean){
+        double variance = rates.stream().mapToDouble(rate -> Math.pow(rate - mean, 2)).average().orElse(0.0);
+        return Math.sqrt(variance);
+    }
 
 }
 
-// ask gpt this
+
