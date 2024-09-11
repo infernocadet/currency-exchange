@@ -2,6 +2,7 @@ package currency.gui;
 
 import currency.Main;
 import currency.currency.Currency;
+import currency.data.Parser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,6 +50,7 @@ public class ExchangeRatePanel extends JPanel {
                     double rate = Double.parseDouble(exchangeField.getValue().getText());
                     if (rate != currency.getExchangeRates().get(exchangeField.getKey())) {
                         currency.getExchangeRates().put(exchangeField.getKey(), rate);
+                        new Parser().updateJson();
                         Main.instance.rateHistoryManager.appendRateHistory(currency.getName(), exchangeField.getKey(), rate, date);
                     }
                 }

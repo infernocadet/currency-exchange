@@ -130,6 +130,43 @@ public class RateHistoryManager {
         return historyRecords;
     }
 
+    public String compareLatestRates(String fromCurrency, String toCurrency) {
+        List<String[]> historyRecords = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(HISTORY_FILE_PATH))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                String entryFrom = parts[1];
+                String entryTo = parts[2];
+
+                if (entryFrom.equals(fromCurrency) && entryTo.equals(toCurrency)) {
+                    historyRecords.add(parts);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (historyRecords.size() < 2) {
+            return "";
+        }
+
+        historyRecords.sort((a, b) -> LocalDate.parse(b[0], DATE_FORMATTER).compareTo(LocalDate.parse(a[0], DATE_FORMATTER)));
+
+        double latestRate = Double.parseDouble(historyRecords.get(0)[3]);
+        double previousRate = Double.parseDouble(historyRecords.get(1)[3]);
+
+        if (latestRate > previousRate) {
+            return "(I)";
+        } else if (latestRate < previousRate) {
+            return "(D)";
+        } else {
+            return "";
+        }
+    }
+
+
     public Map<String, Double> getSummaryStatistics(String fromCurrency, String toCurrency, LocalDate startDate, LocalDate endDate){
         List<String[]> historyRecords = readRateHistory(fromCurrency, toCurrency, startDate, endDate);
         List<Double> rates = historyRecords.stream().map(record -> Double.parseDouble(record[3])).collect(Collectors.toList());
