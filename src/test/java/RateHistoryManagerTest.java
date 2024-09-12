@@ -67,6 +67,18 @@ class RateHistoryManagerTest {
         manager.appendRateHistory("USD", "EUR", 0.85, date1);
         manager.appendRateHistory("USD", "EUR", 0.87, date2);
 
-        assertEquals("(I)", manager.compareLatestRates("USD", "EUR"));
+        assertEquals("(↑)", manager.compareLatestRates("USD", "EUR"));
+    }
+
+    @Test
+    void testGetAllConversionRates() throws Exception{
+        LocalDate startDate = LocalDate.of(2024, 9, 10);
+        LocalDate endDate = LocalDate.of(2024, 9, 12);
+        manager.appendRateHistory("USD", "EUR", 0.85, startDate);
+        manager.appendRateHistory("USD", "EUR", 0.86, LocalDate.of(2024, 9, 11));
+        manager.appendRateHistory("USD", "EUR", 0.87, endDate);
+        List<String> conversionRates = manager.getAllConversionRates("USD", "EUR", startDate, endDate);
+        assertEquals(3, conversionRates.size(), "Expected 3 conversion rate records");
     }
 }
+
