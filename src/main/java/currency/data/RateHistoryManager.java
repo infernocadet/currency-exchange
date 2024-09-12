@@ -208,6 +208,20 @@ public class RateHistoryManager {
         double variance = rates.stream().mapToDouble(rate -> Math.pow(rate - mean, 2)).average().orElse(0.0);
         return Math.sqrt(variance);
     }
+
+    public List<String> getAllConversionRates(String fromCurrency, String toCurrency, LocalDate startDate, LocalDate endDate) {
+        List<String[]> historyRecords = readRateHistory(fromCurrency, toCurrency, startDate, endDate);
+
+        List<String> rates = new ArrayList<>();
+        for (String[] record : historyRecords) {
+            String date = record[0];
+            double rate = Double.parseDouble(record[3]);
+            rates.add(String.format("Date: %s, Rate: %.2f", date, rate));
+        }
+        return rates;
+    }
+
 }
+
 
 
