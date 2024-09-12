@@ -67,16 +67,27 @@ public class SummaryPanel extends JPanel {
 
                 // use the rate history manager from the main instance and call summary method
                 RateHistoryManager manager = Main.instance.rateHistoryManager;
-                Map<String, Double> statistics = manager.getSummaryStatistics(fromCurrency, toCurrency, startDate, endDate);
+                List<String> conversionRates = manager.getAllConversionRates(fromCurrency, toCurrency, startDate, endDate);
 
-                // e.g. if picks history of rates between AUD and AUD. this shouldnt appear on the csv
-                if (statistics.isEmpty()) {
-                    resultArea.setText("No data available for the selected range.");
+                Map<String, Double> statistics = manager.getSummaryStatistics(fromCurrency, toCurrency, startDate, endDate);
+                StringBuilder result = new StringBuilder();
+                if (conversionRates.isEmpty()) {
+                    result.append("No conversion rates available for the selected range.\n");
                 } else {
-                    StringBuilder result = new StringBuilder();
-                    statistics.forEach((key, value) -> result.append(key).append(": ").append(String.format("%.2f", value)).append("\n"));
-                    resultArea.setText(result.toString());
+                    result.append("Conversion Rates from ").append(fromCurrency).append(" to ").append(toCurrency).append(":\n");
+                    for (String rate : conversionRates) {
+                        result.append(rate).append("\n");
+                    }
                 }
+
+                if (statistics.isEmpty()) {
+                    result.append("No data available for the selected range.");
+                } else {
+                    result.append("\nSummary Statistics:\n");
+                    statistics.forEach((key, value) -> result.append(key).append(": ").append(String.format("%.2f", value)).append("\n"));
+                }
+
+                resultArea.setText(result.toString());
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
