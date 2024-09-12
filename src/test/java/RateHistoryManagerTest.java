@@ -1,3 +1,4 @@
+import currency.currency.Currency;
 import currency.data.RateHistoryManager;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
@@ -26,6 +27,7 @@ class RateHistoryManagerTest {
     void testAppendRateHistory() throws Exception {
         LocalDate date = LocalDate.of(2024, 9, 11);
         manager.appendRateHistory("USD", "EUR", 0.85, date);
+        manager.appendRateHistory(new Currency("testCurrency", LocalDate.now()));
 
         List<String[]> history = manager.readRateHistory("USD", "EUR", date, date);
         assertFalse(history.isEmpty());

@@ -1,5 +1,7 @@
 import currency.Main;
 import currency.currency.Currency;
+import currency.user.Role;
+import currency.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +24,14 @@ class CurrencyTest {
         usd.getExchangeRates().put("EUR", 0.85);
         eur.getExchangeRates().put("USD", 1.18);
 
-        Main.instance = new Main();
+        Main.instance = new Main(); // first load
+
         Main.instance.currencies = new ArrayList<>();
         Main.instance.currencies.add(usd);
         Main.instance.currencies.add(eur);
+        Main.instance.users = new ArrayList<>();
+        Main.instance.users.add(new User("john", "pass", Role.USER));
+
     }
 
     @Test
@@ -84,5 +90,13 @@ class CurrencyTest {
     void testGetCurrencyByNameNullInput() {
         Currency notFound = Currency.getCurrencyByName(null);
         assertNull(notFound);
+    }
+
+    @Test
+    void testLogin() {
+        assertTrue(Main.instance.login("john", "pass"), "should work");
+        assertFalse(Main.instance.login("john", "notpass"), "wrong password");
+        assertFalse(Main.instance.login("notjohn", "pass"), "no user");
+        assertFalse(Main.instance.login("notjohn", "notpass"), "both bad");
     }
 }
