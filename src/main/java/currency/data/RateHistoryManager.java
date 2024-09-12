@@ -161,9 +161,9 @@ public class RateHistoryManager {
         double previousRate = Double.parseDouble(historyRecords.get(1)[3]);
 
         if (latestRate > previousRate) {
-            return "(I)";
+            return "(↑)";
         } else if (latestRate < previousRate) {
-            return "(D)";
+            return "(↓)";
         } else {
             return "";
         }
