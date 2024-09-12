@@ -13,7 +13,7 @@ public class Frame extends JFrame {
         setSize(300, 150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(true);
         showLoginPanel();
         setVisible(true);
     }
